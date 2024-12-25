@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection Based on Faces</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #444;
+        }
+
+        #videoContainer {
+            margin: 20px auto;
+            max-width: 600px;
+            position: relative;
+            border: 5px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .button.start {
+            background-color: #28a745;
+        }
+
+        .button.stop {
+            background-color: #dc3545;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        .button:active {
+            transform: scale(1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .button svg {
+            fill: white;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="container mt-5">
+    <h1>Welcome to the Dashboard</h1>
+    <p>Select a section from the navigation bar to get started:</p>
+    <ul>
+        <li><strong>Camera:</strong> Live video stream from your camera.</li>
+        <li><strong>Image Upload:</strong> Upload and process images.</li>
+        <li><strong>Video Upload:</strong> Upload and analyze video files.</li>
+    </ul>
+</div>
+</body>
+</html>
+
+

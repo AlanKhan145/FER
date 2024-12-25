@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+{% include 'header.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Process Image</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .upload-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-container input[type="file"] {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-container input[type="file"]:hover {
+            background-color: #45a049;
+        }
+
+        .upload-container button {
+            padding: 12px 20px;
+            margin-left: 10px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-container button:hover {
+            background-color: #1976D2;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 1rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+
+        .image-container {
+            width: 45%;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-container h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0e0e0;
+            color: #888;
+            font-size: 1.4rem;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+        }
+
+        .image-placeholder i {
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Upload an Image for Emotion Detection</h1>
+
+    <div class="upload-container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="file" required>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <div class="container">
+        <div class="image-container">
+            <h3>Original Image</h3>
+            <div id="original-image-container" class="image-placeholder">
+                <i>📷 No Image</i>
+            </div>
+        </div>
+        <div class="image-container">
+            <h3>Processed Image</h3>
+            <div id="processed-image-container" class="image-placeholder">
+                <i>🔍 No Image</i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const errorMessage = document.getElementById('error-message');
+        const originalImageContainer = document.getElementById('original-image-container');
+        const processedImageContainer = document.getElementById('processed-image-container');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('file');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.processed_image_url) {
+                    errorMessage.textContent = '';
+                    // Hiển thị ảnh gốc
+                    const originalImage = document.createElement('img');
+                    originalImage.src = URL.createObjectURL(fileInput.files[0]);
+                    originalImageContainer.innerHTML = '';  // Xoá placeholder
+                    originalImageContainer.appendChild(originalImage);
+
+                    // Hiển thị ảnh đã xử lý
+                    const processedImage = document.createElement('img');
+                    processedImage.src = data.processed_image_url;
+                    processedImageContainer.innerHTML = '';  // Xoá placeholder
+                    processedImageContainer.appendChild(processedImage);
+                } else {
+                    errorMessage.textContent = data.error || 'An error occurred';
+                }
+            })
+            .catch(error => {
+                errorMessage.textContent = 'An error occurred: ' + error;
+            });
+        });
+    </script>
+
+</body>
+</html>

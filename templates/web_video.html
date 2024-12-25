@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+{% include 'header.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection Based on Faces</title>
+
+    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .upload-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-container input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .upload-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .upload-container button:hover {
+            background-color: #45a049;
+        }
+
+        #video-container {
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+
+        #video-container h3 {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        #video-feed {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .controls button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .controls button:hover {
+            background-color: #c0392b;
+        }
+
+        #no-video-msg {
+            text-align: center;
+            color: #e74c3c;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emotion Detection Based on Faces</h1>
+
+        <div class="upload-container">
+            <h3>Upload a Video</h3>
+            <form id="upload-form" enctype="multipart/form-data">
+                <input type="file" id="video-file" name="video_file" accept="video/*" required>
+                <button type="submit">Upload Video</button>
+            </form>
+        </div>
+
+        <div id="video-container">
+            <h3>Video Stream</h3>
+            <img id="video-feed" src="" alt="Video feed will appear here">
+        </div>
+
+        <div id="no-video-msg">
+            <p>No video uploaded. Please upload a video to start streaming.</p>
+        </div>
+
+        <div class="controls">
+            <button id="stop-btn">
+                <i class="fas fa-stop"></i> Stop
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Show or hide the "No video uploaded" message based on the video feed status
+        function updateNoVideoMessage() {
+            const videoFeed = document.getElementById('video-feed');
+            const noVideoMsg = document.getElementById('no-video-msg');
+            if (!videoFeed.src) {
+                noVideoMsg.style.display = 'block';
+            } else {
+                noVideoMsg.style.display = 'none';
+            }
+        }
+
+        // Function to handle video file upload
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let formData = new FormData();
+            formData.append('video_file', document.getElementById('video-file').files[0]);
+
+            fetch('/upload_video', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    document.getElementById('video-feed').src = '/video_feed';
+                    updateNoVideoMessage(); // Hide the "No video uploaded" message
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading video:', error);
+                alert('Error uploading video');
+            });
+        });
+
+        // Stop button functionality
+        document.getElementById('stop-btn').addEventListener('click', function() {
+            fetch('/stop_video', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                document.getElementById('video-feed').src = ''; // Clear the video stream
+                updateNoVideoMessage(); // Show the "No video uploaded" message again
+            });
+        });
+    </script>
+
+</body>
+</html>

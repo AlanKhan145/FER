@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient">
+    <div class="container-fluid">
+        <!-- Logo và tên trang -->
+        <a class="navbar-brand" href="#">
+            <i class="fa fa-tachometer-alt"></i> Dashboard
+        </a>
+
+        <!-- Nút điều hướng (toggler) cho màn hình nhỏ -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu điều hướng -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/camera">
+                        <i class="fa fa-camera"></i> Camera
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/img">
+                        <i class="fa fa-image"></i> Image Upload
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/video">
+                        <i class="fa fa-video"></i> Video Upload
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Thêm Font Awesome và CSS tùy chỉnh -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<style>
+    /* Navbar styling */
+    .navbar {
+        background: linear-gradient(90deg, #1d3557, #457b9d);
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Navbar brand styling */
+    .navbar-brand {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #f1faee;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Menu item styling */
+    .navbar-nav .nav-link {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #f1faee;
+        padding: 12px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    /* Menu item hover effect */
+    .navbar-nav .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #a8dadc;
+        transform: scale(1.05);
+    }
+
+    /* Icon spacing */
+    .fa {
+        margin-right: 8px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .navbar-nav .nav-link {
+            font-size: 1rem;
+            text-align: center;
+        }
+    }
+</style>

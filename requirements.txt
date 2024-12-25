@@ -1,0 +1,17 @@
+matplotlib
+tensorflow
+Pillow
+numpy
+opencv-python
+seaborn
+scikit-learn
+tensorflow
+pygame
+django
+deepface
+tf-keras
+cmake
+dlib-bin
+
+
+
